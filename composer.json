@@ -2,11 +2,13 @@
     "name": "leadferret/api-php-sdk",
     "type": "library",
     "description": "Client library for LeadFerret APIs",
-    "keywords": ["google"],
+    "keywords": ["leadferret"],
     "homepage": "http://docs.leadferretuser.apiary.io/",
     "license": "Apache-2.0",
     "require": {
-        "php": ">=5.5.1"
+        "php": ">=5.5.1",
+        "guzzlehttp/guzzle": "^6.0",
+        "vlucas/phpdotenv": "^2.0"
     },
     "require-dev": {
       "phpunit/phpunit": "3.7.*"
