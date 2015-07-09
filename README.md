@@ -12,9 +12,9 @@ For now just check out the repo from git. Later we will add it to packagyst so y
 
     `git clone https://github.com/leadferret/LeadFerret-API-PHP-SDK.git`
 
-## Beta ##
+## sub-Alpha 
 
-This library is in Beta. Contact us if you wish to have more details. 
+This library is in sub-Alpha state. Contact us if you wish to have more details. If you wish to work on this or add features please fork it and send a pull request. 
 
 
 ## Usage
