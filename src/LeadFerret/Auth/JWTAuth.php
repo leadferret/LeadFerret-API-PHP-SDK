@@ -3,6 +3,7 @@ namespace LeadFerret\Auth;
 
 
 use LeadFerret\Request;
+use LeadFerret\Exceptions\RequestClientException;
 
 /**
  * 
@@ -15,11 +16,23 @@ class JWTAuth extends MasterAuth
     
     protected $username = '';
     protected $password = '';
-    protected $tokenEndpoint = '';
+    protected $tokenEndpoint = '/api-token-auth';
     
     public function authenticate()
     {
-        return $this->request->post(); 
+        $this->request->appendEndpoint($this->tokenEndpoint)
+            ->appendVar('username',$this->username)
+            ->appendVar('password',$this->password);
+        
+        $resp = $this->request->post()->getBody();
+        
+        
+        $data = json_decode($resp,true);
+        
+        if(!isset($data['token']))
+            throw new RequestClientException("The token was missing from the request. " . $resp);
+        
+        return $data['token'];
     }
     
     public function setUsername($username)

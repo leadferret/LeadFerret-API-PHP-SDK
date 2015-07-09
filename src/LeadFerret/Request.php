@@ -1,6 +1,7 @@
 <?php
 namespace LeadFerret;
 
+use GuzzleHttp\Middleware;
 
 /**
  * 
@@ -42,8 +43,18 @@ class Request
  
     public function __construct($options)
     {
+
+        if(isset($options['endpoint']))
+            $this->endpoint = $options['endpoint'];
         
-        $this->endpoint = $options['endpoint'];
+        $this->client = new \GuzzleHttp\Client();
+        
+    }
+    
+    public function appendEndpoint($apiUrl)
+    {
+        $this->endpoint = $this->endpoint . $apiUrl;
+        return $this;
     }
 
     /**
@@ -52,7 +63,8 @@ class Request
      */
     public function appendObject(Requestable $obj)
     {
-        $this->outsideVals = array_merge($this->outsideVals, $obj->toParam());
+        $this->outsideVals = array_merge($this->outsideVals, ['json' => $obj->toParam()] );
+        
         return $this;
     }
 
@@ -69,18 +81,7 @@ class Request
      */
     public function getRequestVars()
     {
-        $nvp = [];
-        // loop each of the keys we might have and see if there is any data
-        // if we have some data then stack up the variable for the NVP
-        foreach ($this->requestMap as $key => $val) {
-            // if it is set use it
-            if (isset($this->requestVals[$val]))
-                $nvp[$key] = $this->requestVals[$val];
-        }
-        
-        $authVars = $this->authentication->toParam();
-        
-        return $nvp + $this->outsideVals + $authVars;
+        return $this->requestVals;
     }
 
     /**
@@ -99,30 +100,35 @@ class Request
      */
     public function post()
     {
-        $vars = $this->getRequestVars();
-        $paramList = array();
-        foreach ($vars as $index => $value) {
-            if ($value === '' or $value === null)
-                continue;
-            $paramList[] = $index . "=" . $value;
+            
+            // $response = $this->client->post($this->endpoint, $this->getRequestVars());
+            // return new NvpResponse($result);
+        try {
+            
+            // Grab the client's handler instance.
+            $clientHandler = $this->client->getConfig('handler');
+            // Create a middleware that echoes parts of the request.
+            $tapMiddleware = Middleware::tap(function ($request)
+            {
+                print_r($request->getHeader('Content-Type'));
+                // application/json
+                echo $request->getBody() . "\n";
+                echo $request->getUri() . "\n";
+                // {"foo":"bar"}
+            });
+            
+            $response = $this->client->post($this->endpoint, [
+                'json' => $this->getRequestVars(),
+                'handler' => $tapMiddleware($clientHandler)
+            ]);
+        } catch (GuzzleHttp\Exception\BadResponseException $e) {
+            echo 'Uh oh! ' . $e->getMessage();
         }
         
-        $apiStr = implode("&", $paramList);
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->endpoint);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_POST, TRUE);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $apiStr);
-        $result = curl_exec($curl);
         
-        if ($result === FALSE) {
-            throw new \RuntimeException(curl_error($curl));
-        }
-        curl_close($curl);
+        return $response;
         
-        return new NvpResponse($result);
+        
     }
 
     /**

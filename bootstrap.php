@@ -6,5 +6,6 @@ require_once __DIR__  . '/vendor/autoload.php';
  * Remember to set the .env.example to simply .env 
  * add your secrets  
  */
-Dotenv::load(__DIR__);
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
 

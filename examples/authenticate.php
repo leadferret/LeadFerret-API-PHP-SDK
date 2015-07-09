@@ -6,7 +6,7 @@ use LeadFerret\LFClient;
 
 
 $client = new LFClient();
-$token = $client->authenticate($username, $password);
+$token = $client->authenticate();
 
 echo $token;
 
