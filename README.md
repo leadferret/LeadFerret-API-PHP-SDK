@@ -10,7 +10,7 @@ Client SDK for the LeadFerret API - written in PHP. Allows you to work with the 
 
 For now just check out the repo from git. Later we will add it to packagyst so you can composify it.  
 
-    `git clone https://github.com/leadferret/LeadFerret-API-PHP-SDK.git`
+    git clone https://github.com/leadferret/LeadFerret-API-PHP-SDK.git
 
 ## sub-Alpha 
 
