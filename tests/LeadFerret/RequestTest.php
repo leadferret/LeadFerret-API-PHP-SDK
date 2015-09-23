@@ -9,8 +9,18 @@ use GuzzleHttp\Middleware;
  * @package LeadFerret
  * @namesapce LeadFerret
  */
-class Request 
+class RequestTest extends \BaseTestCase 
 {
+    
+    public function testCanCreateRequest()
+    {
+        
+        $req = new Request(['endpoint','test.com']);
+        $this->assertInstanceOf('Request',$req);
+        $this->assertInstanceOf('\GuzzleHttp\Client',$req->getClient());
+        
+    }
+    
     
     /**
      * guzzle client
@@ -195,10 +205,5 @@ class Request
     {
         $this->payment = $payment;
         return $this;
-    }
-    
-    public function getClient()
-    {
-        return $this->client;
     }
 }
