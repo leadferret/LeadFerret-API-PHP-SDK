@@ -13,31 +13,19 @@ class ConfigTest extends \BaseTestCase
 
     public function testCanCreateConfig()
     {
-        $baseUrl = 'http://test.com/';
-        $basePath = 'public/api';
-        $applicationName = 'test-app';
-        
-        $baseUrl2 = 'http://test.net/';
-        $basePath2 = 'public/nothing';
-        $applicationName2 = 'test2-app';
-        
-        $config = new Config([
-            'baseUrl' => $baseUrl,
-            'basePath' => $basePath,
-            'applicationName' => $applicationName
-        ]);
-        
-        
-        $this->assertEquals($baseUrl,$config->getBaseUrl());
-        $this->assertEquals($basePath,$config->getBasePath());
-        $this->assertEquals($applicationName,$config->getApplicationName());
-        $this->assertEquals($baseUrl . $basePath, $config->apiUrl());
+        $config = new Config($this->getBasicConfigArray01());
+        $this->assertEquals($this->baseUrl,$config->getBaseUrl());
+        $this->assertEquals($this->basePath,$config->getBasePath());
+        $this->assertEquals($this->applicationName,$config->getApplicationName());
+        $this->assertEquals($this->baseUrl . $this->basePath, $config->apiUrl());
         $this->assertEquals(3,count($config->getRequiredFields()));
         
-        $config->setBasePath($basePath2);
-        $config->setBaseUrl($baseUrl2);
-        $config->setApplicationName($applicationName2);
-        $this->assertEquals($applicationName2, $config->getApplicationName());
+        $config->setBasePath($this->basePath2);
+        $config->setBaseUrl($this->baseUrl2);
+        $config->setApplicationName($this->applicationName2);
+        $this->assertEquals($this->applicationName2, $config->getApplicationName());
+        
+        $this->assertNotNull($config->getLibraryVersion());
         
     }
     

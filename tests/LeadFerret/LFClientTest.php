@@ -2,6 +2,8 @@
 namespace LeadFerret\Tests\SDK;
 
 
+use LeadFerret\SDK\Config;
+use LeadFerret\SDK\LFClient;
 /**
  *
  * @author solvire
@@ -12,6 +14,12 @@ class LFClientTest extends \BaseTestCase
 {
     
     
+    public function testCanBuildClient()
+    {
+        
+        $client = new LFClient(new Config($this->getBasicConfigArray01()));
+        
+    }
 
 }
     

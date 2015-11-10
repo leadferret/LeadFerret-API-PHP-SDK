@@ -112,5 +112,15 @@ class Config
         return $this->requiredFields;
     }
     
+    /**
+     * Get a string containing the version of the library.
+     *
+     * @return string
+     */
+    public function getLibraryVersion()
+    {
+        return self::LIBVER;
+    }
+    
     
 }

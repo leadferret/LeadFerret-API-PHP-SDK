@@ -1,6 +1,9 @@
 <?php
 namespace \LeadFerret\SDK\Resources;
 
+
+use LeadFerret\SDK\Config;
+
 /**
  * 
  * @author solvire <stevenjscott@gmail.com>
@@ -11,7 +14,10 @@ class ResourceClient extends LFClient
 {
     
     
-    
+    public function __construct(Config $config)
+    {
+        
+    }
     
     
 }

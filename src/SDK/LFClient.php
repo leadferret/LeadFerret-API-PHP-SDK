@@ -44,7 +44,11 @@ class LFClient
      */
     private $token = '';
     
-    // Used to track authenticated state, can't discover services after doing authenticate()
+    /**
+     * Used to track authenticated state, 
+     * can't discover services after doing authenticate()
+     * 
+     */ 
     private $authenticated = false;
 
     /**
@@ -53,19 +57,11 @@ class LFClient
      * @param
      *            $options
      */
-    public function __construct(array $options = [])
+    public function __construct(Config $config)
     {
-        $this->endpoint = Ev::get(LF_API_ENDPOINT,'https://leadferret.com/public/api');
-    }
-
-    /**
-     * Get a string containing the version of the library.
-     *
-     * @return string
-     */
-    public function getLibraryVersion()
-    {
-        return self::LIBVER;
+        
+        $this->endpoint = $config->apiUrl();
+        
     }
 
     /**

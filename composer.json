@@ -9,7 +9,7 @@
         "php": ">=5.5.1",
         "guzzlehttp/guzzle": "^6.0",
         "vlucas/phpdotenv": "^2.0",
-        "solvire/common-utilities": "^0.0.2"
+        "solvire/common-utilities": "dev-master"
     },
     "require-dev": {
       "phpunit/phpunit": "3.7.*"
