@@ -1,13 +1,14 @@
 <?php
-namespace LeadFerret;
+namespace LeadFerret\Tests\SDK;
 
 use GuzzleHttp\Middleware;
+use LeadFerret\SDK\Request;
 
 /**
  * 
  * @author solvire
- * @package LeadFerret
- * @namesapce LeadFerret
+ * @package LeadFerret\SDK
+ * @namesapce LeadFerret\SDK
  */
 class RequestTest extends \BaseTestCase 
 {
@@ -16,7 +17,7 @@ class RequestTest extends \BaseTestCase
     {
         
         $req = new Request(['endpoint','test.com']);
-        $this->assertInstanceOf('Request',$req);
+        $this->assertInstanceOf('\LeadFerret\SDK\Request',$req);
         $this->assertInstanceOf('\GuzzleHttp\Client',$req->getClient());
         
     }
@@ -51,16 +52,6 @@ class RequestTest extends \BaseTestCase
     protected $outsideVals = [];
 
  
-    public function __construct($options)
-    {
-
-        if(isset($options['endpoint']))
-            $this->endpoint = $options['endpoint'];
-        
-        $this->client = new \GuzzleHttp\Client();
-        
-    }
-    
     public function appendEndpoint($apiUrl)
     {
         $this->endpoint = $this->endpoint . $apiUrl;

@@ -2,7 +2,7 @@
 
 include_once '../bootstrap.php';
 
-use LeadFerret\LFClient;
+use LeadFerret\SDK\LFClient;
 
 
 $client = new LFClient();

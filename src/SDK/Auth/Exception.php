@@ -1,5 +1,5 @@
 <?php
-namespace LeadFerret\Auth;
+namespace LeadFerret\SDK\Auth;
 
 class AuthException extends \RuntimeException
 {

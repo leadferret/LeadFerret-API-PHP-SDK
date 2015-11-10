@@ -1,15 +1,14 @@
 <?php
-namespace LeadFerret\Auth;
+namespace LeadFerret\SDK\Auth;
 
 
-use LeadFerret\Request;
-use LeadFerret\Exceptions\RequestClientException;
+use LeadFerret\SDK\Exceptions\RequestClientException;
 
 /**
  * 
  * @author solvire
  * @package Auth
- * @namesapce LeadFerret\Auth
+ * @namesapce LeadFerret\SDK\Auth
  */
 class JWTAuth extends MasterAuth
 {

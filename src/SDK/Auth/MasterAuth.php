@@ -1,12 +1,12 @@
 <?php
-namespace LeadFerret\Auth;
+namespace LeadFerret\SDK\Auth;
 
-use LeadFerret\Request;
+use LeadFerret\SDK\Request;
 /**
  * 
  * @author solvire
  * @package Auth
- * @namesapce LeadFerret\Auth
+ * @namesapce LeadFerret\SDK\Auth
  */
 abstract class MasterAuth
 {

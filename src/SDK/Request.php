@@ -1,13 +1,13 @@
 <?php
-namespace LeadFerret;
+namespace LeadFerret\SDK;
 
 use GuzzleHttp\Middleware;
 
 /**
  * 
  * @author solvire
- * @package LeadFerret
- * @namesapce LeadFerret
+ * @package LeadFerret\SDK
+ * @namesapce LeadFerret\SDK
  */
 class Request 
 {

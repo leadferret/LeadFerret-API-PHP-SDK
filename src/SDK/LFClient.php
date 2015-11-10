@@ -1,18 +1,17 @@
 <?php
-namespace LeadFerret;
+namespace LeadFerret\SDK;
 
-use LeadFerret\Auth\JWTAuth;
+use LeadFerret\SDK\Auth\JWTAuth;
+use Solvire\Application\Environment as Ev;
 
 /**
  *
  * @author solvire
- * @package LeadFerret
- * @name sapce LeadFerret
+ * @package LeadFerret\SDK
+ * @name sapce LeadFerret\SDK
  */
 class LFClient
 {
-
-    const LIBVER = "0.1.0";
 
     /**
      *
@@ -32,7 +31,11 @@ class LFClient
      */
     private $logger;
 
-    private $endpoint = 'http://api.leadferret.com/public/api';
+    /**
+     * 
+     * @var unknown
+     */
+    private $endpoint = null;
 
     /**
      * this should probably be removed and placed inside the auth
@@ -45,14 +48,14 @@ class LFClient
     private $authenticated = false;
 
     /**
-     * Construct the LeadFerret Client.
+     * Construct the LeadFerret\SDK Client.
      *
      * @param
      *            $options
      */
     public function __construct(array $options = [])
     {
-        $this->endpoint = getenv('LF_API_ENDPOINT');
+        $this->endpoint = Ev::get(LF_API_ENDPOINT,'https://leadferret.com/public/api');
     }
 
     /**
@@ -74,11 +77,13 @@ class LFClient
      * @param string $username            
      * @param string $password            
      * @return string token
+     * @throws RuntimeException 
      */
     public function authenticate($username = null, $password = null)
     {
-        $username = getenv('LF_USERNAME');
-        $password = getenv('LF_PASSWORD');
+        // will throw a RuntimeException if empty env
+        $username = Ev::get('LF_USERNAME');
+        $password = Ev::get('LF_PASSWORD');
         
         $jwt = new JWTAuth(new Request([
             'endpoint' => $this->endpoint

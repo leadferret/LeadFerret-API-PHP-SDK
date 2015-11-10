@@ -1,5 +1,5 @@
 <?php
-namespace LeadFerret\Exceptions;
+namespace LeadFerret\Tests\SDK\Exceptions;
 
 class RequestClientException extends \RuntimeException
 {
