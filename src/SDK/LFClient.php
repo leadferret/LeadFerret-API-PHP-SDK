@@ -5,13 +5,23 @@ use LeadFerret\SDK\Auth\JWTAuth;
 use Solvire\Application\Environment as Ev;
 
 /**
- *
+ * @see https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml#Reserved_Property_Names_for_Paging
  * @author solvire
  * @package LeadFerret\SDK
  * @name sapce LeadFerret\SDK
  */
 class LFClient
 {
+    
+    /**
+     * @var GuzzleHttp/Client
+     */
+    protected $client = null;
+    
+    /**
+     * @var LFResponse
+     */
+    protected $response = null;
 
     /**
      *
@@ -32,36 +42,39 @@ class LFClient
     private $logger;
 
     /**
-     * 
+     *
      * @var unknown
      */
     private $endpoint = null;
 
     /**
      * this should probably be removed and placed inside the auth
-     * 
+     *
      * @var unknown
      */
     private $token = '';
-    
+
     /**
-     * Used to track authenticated state, 
+     * Used to track authenticated state,
      * can't discover services after doing authenticate()
-     * 
-     */ 
+     */
     private $authenticated = false;
 
     /**
      * Construct the LeadFerret\SDK Client.
      *
-     * @param
-     *            $options
+     * @param Config $config
      */
     public function __construct(Config $config)
     {
-        
         $this->endpoint = $config->apiUrl();
-        
+        if($this->client == null )
+            $this->initClient();
+    }
+    
+    protected function initClient()
+    {
+        $this->client = new \GuzzleHttp\Client(['base_uri' => $this->endpoint]);
     }
 
     /**
@@ -73,7 +86,7 @@ class LFClient
      * @param string $username            
      * @param string $password            
      * @return string token
-     * @throws RuntimeException 
+     * @throws RuntimeException
      */
     public function authenticate($username = null, $password = null)
     {
@@ -82,12 +95,20 @@ class LFClient
         $password = Ev::get('LF_PASSWORD');
         
         $jwt = new JWTAuth(new Request([
-            'endpoint' => $this->endpoint
+            'endpoint' => rtrim($this->endpoint,'/')
         ]));
         $this->token = $jwt->setUsername($username)
             ->setPassword($password)
             ->authenticate();
         
+        return $this->token;
+    }
+    
+    /**
+     * @return string token
+     */
+    public function getToken()
+    {
         return $this->token;
     }
 

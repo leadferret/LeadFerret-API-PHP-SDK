@@ -108,18 +108,18 @@ class Request
             // Grab the client's handler instance.
             $clientHandler = $this->client->getConfig('handler');
             // Create a middleware that echoes parts of the request.
-            $tapMiddleware = Middleware::tap(function ($request)
-            {
-                print_r($request->getHeader('Content-Type'));
-                // application/json
-                echo $request->getBody() . "\n";
-                echo $request->getUri() . "\n";
-                // {"foo":"bar"}
-            });
+//             $tapMiddleware = Middleware::tap(function ($request)
+//             {
+//                 print_r($request->getHeader('Content-Type'));
+//                 // application/json
+//                 echo $request->getBody() . "\n";
+//                 echo $request->getUri() . "\n";
+//                 // {"foo":"bar"}
+//             });
             
             $response = $this->client->post($this->endpoint, [
                 'json' => $this->getRequestVars(),
-                'handler' => $tapMiddleware($clientHandler)
+//                 'handler' => $tapMiddleware($clientHandler)
             ]);
         } catch (GuzzleHttp\Exception\BadResponseException $e) {
             echo 'Uh oh! ' . $e->getMessage();

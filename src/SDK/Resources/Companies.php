@@ -1,22 +1,30 @@
 <?php
-namespace LeadFerret\SDK\Resources;
+namespace LeadFerret\Tests\SDK\Auth;
 
 
+use LeadFerret\SDK\Config;
+use LeadFerret\SDK\LFClient;
 /**
- * 
- * @author solvire <stevenjscott@gmail.com>
- * @package Resources
- * @namespace LeadFerret\SDK\Resources
+ *
+ * @author solvire
+ * @package LeadFerret\SDK
+ * @name sapce LeadFerret\SDK
  */
 class Companies extends ResourceClient
 {
     
-    /**
-     * 
-     */
-    public function __construct()
+    
+    public function testCanAuthenticateClient()
     {
         
+        $client = new LFClient(new Config($this->getBasicConfigArray01()));
+        $this->assertInstanceOf('\LeadFerret\SDK\LFClient', $client);
+        $client->authenticate();
+        $token = $client->getToken();
+        
+        // not sure what to check here. 
+        $this->assertTrue(count(explode('.',$token)) == 3);
+        
     }
-    
+
 }

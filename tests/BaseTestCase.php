@@ -9,13 +9,16 @@
 class BaseTestCase extends PHPUnit_Framework_TestCase
 {
     
-    public $baseUrl = 'http://test.com/';
-    public $basePath = 'public/api';
-    public $applicationName = 'test-app';
+    public $baseUrl = 'http://development.leadferret.com/';
+    public $basePath = 'public/api/';
+    public $applicationName = 'lf-user-api';
     
-    public $baseUrl2 = 'http://test.net/';
-    public $basePath2 = 'public/nothing';
-    public $applicationName2 = 'test2-app';
+    public $baseUrl2 = 'https://leadferret.com/';
+    public $basePath2 = 'public/api'; // for testing specifics with guzzle 
+    public $applicationName2 = 'test-api2';
+    
+    // fill this token when we can so we aren't authenticating all over the place 
+    public $activeToken = '';
     
 
     /**
