@@ -12,6 +12,12 @@ namespace LeadFerret\SDK\Resources;
 class Health extends ResourceClient
 {
     /**
+     * don't need to log into this one 
+     * @var unknown
+     */
+    protected $requiredAuth = false;
+    
+    /**
      * 
      * @var unknown
      */

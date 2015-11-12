@@ -61,6 +61,12 @@ class LFClient
     private $authenticated = false;
 
     /**
+     *
+     * @var unknown
+     */
+    protected $headers = [];
+
+    /**
      * Construct the LeadFerret\SDK Client.
      *
      * @param Config $config
@@ -82,6 +88,9 @@ class LFClient
      * If $crossClient is set to true, the request body will not include
      * the request_uri argument
      * Helper wrapped around the OAuth 2.0 implementation.
+     * 
+     * TODO need to identify returning calls. 
+     * Store the auth token somewhere and check it before trying again. 
      *
      * @param string $username            
      * @param string $password            
@@ -101,7 +110,46 @@ class LFClient
             ->setPassword($password)
             ->authenticate();
         
+        $this->storeToken($this->token);
         return $this->token;
+    }
+    
+
+    /**
+     * get the tokens if they exist  
+     * 
+     * @return string
+     */
+    public function gatherToken()
+    {
+        // first try the environment settings in case someone is running CLI 
+        $envToken = Ev::get('LF_JWT_TOKEN');
+        
+        if($envToken)
+            return $envToken;
+        
+        // then try the file storage in case we just authenticated 
+        $tokenStore = Ev::get('LF_TOKEN_STORE');
+        $fileToken = file_get_contents($tokenStore);
+
+        if($fileToken)
+            return $fileToken;
+        
+    }
+    
+    /**
+     * 
+     * @param string $token
+     * @return \LeadFerret\SDK\LFClient
+     */
+    public function storeToken($token)
+    {
+        $tokenStore = Ev::get('LF_TOKEN_STORE');
+        
+        // just pump whatever we have into that file 
+        file_put_contents($tokenStore, $token);
+        
+        return $this;
     }
     
     /**
@@ -155,5 +203,44 @@ class LFClient
     {
         return $this->config->getApplicationName();
     }
+    
+    public function getResponse()
+    {
+        return $this->response;
+    }
+    
+    public function getBody()
+    {
+        if($this->response == null)
+            throw new \RuntimeException("There is no response.");
+        
+        return $this->response->getBody();
+    }
+    
+    public function addHeader($key, $value)
+    {
+        $this->headers[$key] = $value;
+        return $this;
+    }
+    
+
+    /**
+     * just the default json headers
+     *
+     * @return string[]
+     */
+    public function jsonHeaders()
+    {
+        return [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ];
+    }
+    
+    public function headers()
+    {
+        return $this->headers;
+    }
+    
 }
     

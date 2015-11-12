@@ -1,10 +1,9 @@
 <?php
-namespace LeadFerret\Tests\SDK\Auth;
+namespace LeadFerret\SDK\Resources;
 
 
-use LeadFerret\SDK\Config;
-use LeadFerret\SDK\LFClient;
 /**
+ * Just checks the server
  *
  * @author solvire
  * @package LeadFerret\SDK
@@ -13,18 +12,24 @@ use LeadFerret\SDK\LFClient;
 class Companies extends ResourceClient
 {
     
+    /**
+     * 
+     * @var unknown
+     */
+    protected $path = 'companies';
     
-    public function testCanAuthenticateClient()
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \LeadFerret\SDK\Resources\ResourceClient::get()
+     */
+    public function get()
     {
+        if(count($this->parameters) == 0)
+            throw new \RuntimeException("There must be parameters provided in this call.");
         
-        $client = new LFClient(new Config($this->getBasicConfigArray01()));
-        $this->assertInstanceOf('\LeadFerret\SDK\LFClient', $client);
-        $client->authenticate();
-        $token = $client->getToken();
-        
-        // not sure what to check here. 
-        $this->assertTrue(count(explode('.',$token)) == 3);
-        
+        $this->response = parent::get();
+        return $this->response;
     }
 
 }
