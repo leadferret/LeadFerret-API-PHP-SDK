@@ -26,13 +26,13 @@ class CompaniesTest extends \BaseTestCase
         
         try {
             
-        $resource->get();
+            $resource->get();
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             var_dump($e);
         }
-        echo (string) $resource->getBody();
         
-        print_r($resource->json());
+        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream',$resource->getBody());
+        $this->assertInstanceOf('stdClass',$resource->json());
     }
 
     protected function getParameterList()
