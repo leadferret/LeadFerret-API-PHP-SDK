@@ -144,7 +144,12 @@ class LFClient
      */
     public function storeToken($token)
     {
+        
+        // TODO provide a different way (drivers) to store the tokens 
         $tokenStore = Ev::get('LF_TOKEN_STORE');
+        
+        if(!file_exists(dirname($tokenStore)))
+            mkdir(dirname($tokenStore), 0777, true);
         
         // just pump whatever we have into that file 
         file_put_contents($tokenStore, $token);
@@ -158,6 +163,11 @@ class LFClient
     public function getToken()
     {
         return $this->token;
+    }
+    
+    public function hasToken()
+    {
+        return count(explode('.',$this->token)) == 3;
     }
 
     /**
@@ -234,6 +244,13 @@ class LFClient
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
+        ];
+    }
+    
+    public function authHeader()
+    {
+        return [
+            'Authorization' => 'Bearer ' . $this->token
         ];
     }
     

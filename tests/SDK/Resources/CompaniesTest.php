@@ -24,7 +24,12 @@ class CompaniesTest extends \BaseTestCase
             $resource->addParameter(new ResourceParameter($key, $value));
         }
         
+        try {
+            
         $resource->get();
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            var_dump($e);
+        }
         echo (string) $resource->getBody();
         
         print_r($resource->json());

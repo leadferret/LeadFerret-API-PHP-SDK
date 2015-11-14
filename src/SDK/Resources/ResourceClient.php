@@ -70,6 +70,19 @@ abstract class ResourceClient extends LFClient
             'query' => $ret
         ];
     }
+    
+    public function buildHeaders($method, $requiresAuth)
+    {
+        $headers = [];
+        
+        if ($requiresAuth)
+            $headers += $this->authHeader();
+        
+        $headers += $this->jsonHeaders();
+        
+        
+        return ['headers' => $headers];
+    }
 
     /*
      * *******************************************************
@@ -83,7 +96,24 @@ abstract class ResourceClient extends LFClient
      */
     public function get()
     {
-        $this->response = $this->client->request('GET', $this->path, $this->qstring() + $this->jsonHeaders());
+        try {
+            
+            // if we are required to auth then try it
+            if($this->requiresAuth && !$this->hasToken())
+                $this->authenticate();
+            
+            $headers = $this->buildHeaders('GET',$this->requiresAuth);
+            
+            $this->response = $this->client->request('GET', 
+                $this->path, 
+                $this->qstring() + 
+                $headers
+                );
+            
+            
+        } catch (Exception $e) {
+            var_dump($e);
+        }
         return $this->response;
     }
 
